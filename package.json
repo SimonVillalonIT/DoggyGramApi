@@ -11,7 +11,6 @@
   "author": "Simon Villalon",
   "license": "ISC",
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
     "@tensorflow-models/mobilenet": "^2.1.0",
     "@tensorflow/tfjs": "^4.2.0",
     "@tensorflow/tfjs-converter": "^3.1.0",
@@ -32,6 +31,7 @@
     "tsc-watch": "^6.0.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.13",
     "@types/express": "4.17.1",
     "@types/express-fileupload": "^1.4.1",
