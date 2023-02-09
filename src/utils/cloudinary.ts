@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary"
 import { cloudinaryVariables } from "../config/envVariables"
+import { UploadedFile } from "express-fileupload"
 
 
 cloudinary.config({
@@ -15,6 +16,10 @@ export async function uploadImage(filePath: string, folder: string) {
         folder: folder,
     }
     )
+}
+
+export async function deleteImage(publicId: string) {
+    return await cloudinary.uploader.destroy(publicId)
 }
 
 export default cloudinary
