@@ -1,22 +1,28 @@
-import axios from "axios";
 import express from "express";
-const fileupload = require("express-fileupload");
+import fileupload from "express-fileupload";
+import cors from "cors"
+import morgan from "morgan";
+import db from "./config/db"
+import userController from "./controllers/user.controller";
 
 const app = express();
 
 app.use(express.json());
-app.use(fileupload());
+app.use(fileupload({
+  tempFileDir: "uploads",
+  useTempFiles: true,
+}
+));
+app.use(cors())
+app.use(morgan("dev"))
 
 app.get("/", (req, res) => {
-  res.send("Hello world");
-});
-
-app.post("/isADog?", async (req: any, res) => {
-  console.log(req.files);
   res.status(200);
-  res.json({ok: true});
+  res.json({ status: "OK", message: "Hello world!😁" });
 });
 
-app.listen(3000, () => {
-  console.log("listening on http://localhost:3000");
+app.post("/file", userController)
+
+app.listen(8080, () => {
+  console.log("listening on http://localhost:8080");
 });
