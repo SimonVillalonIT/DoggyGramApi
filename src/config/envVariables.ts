@@ -16,6 +16,5 @@ export const cloudinaryVariables = {
 
 export const jwtVariables = {
     secret: process.env.JWT_SECRET,
-    expires: process.env.JWT_EXPIRED_IN,
-    maxage: process.env.JWT_MAXAGE
+    refresh: process.env.JWT_REFRESH
 }

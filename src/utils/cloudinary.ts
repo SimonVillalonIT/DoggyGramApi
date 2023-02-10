@@ -1,6 +1,5 @@
 import { v2 as cloudinary } from "cloudinary"
 import { cloudinaryVariables } from "../config/envVariables"
-import { UploadedFile } from "express-fileupload"
 
 
 cloudinary.config({

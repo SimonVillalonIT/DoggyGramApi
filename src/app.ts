@@ -16,12 +16,12 @@ app.use(fileupload({
 app.use(cors())
 app.use(morgan("dev"))
 
-app.use('/api/user', authRouter)
-
 app.get("/", (req, res) => {
   res.status(200);
   res.json({ status: "OK", message: "Hello world!😁" });
 });
+
+app.use('/api/user', authRouter)
 
 const PORT = process.env.PORT || 8080
 
