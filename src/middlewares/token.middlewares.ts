@@ -5,7 +5,7 @@ import { jwtVariables } from "../config/envVariables.js";
 export const validateToken = (req, res, next) => {
     try {
         let token = req.headers?.authorization;
-        if (!token) throw new Error("No existe el token");
+        if (!token) throw new Error("Token does not exist");
 
         token = token.split(" ")[1];
         const { id } = jwt.verify(token, jwtVariables.secret) as any;
@@ -20,7 +20,7 @@ export const validateToken = (req, res, next) => {
 export const requireRefreshToken = (req, res, next) => {
     try {
         const refreshTokenCookie = req.cookies.refreshToken;
-        if (!refreshTokenCookie) throw new Error("No existe el token");
+        if (!refreshTokenCookie) throw new Error("Token does not exist");
 
         const { uid } = jwt.verify(refreshTokenCookie, jwtVariables.refresh) as any
 

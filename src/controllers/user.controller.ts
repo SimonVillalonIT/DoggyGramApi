@@ -49,7 +49,7 @@ export async function login(req: Request, res: Response) {
 
         return res.json({ token, expiresIn });
     } catch (error) {
-        res.status(403).json({ error: error })
+        res.status(400).json({ error: "The username/email or password is incorrect" })
     }
 }
 
