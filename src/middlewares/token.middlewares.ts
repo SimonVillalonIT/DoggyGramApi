@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import { errorTokens } from "../utils/errorToken.js";
 import { jwtVariables } from "../config/envVariables.js";
+import { next, request, response } from "../ts/interfaces.js";
 
-export const validateToken = (req, res, next) => {
+export const validateToken = (req: request, res: response, next: next) => {
   try {
     let token = req.headers?.authorization;
     if (!token) throw new Error("Token does not exist");
@@ -17,7 +18,11 @@ export const validateToken = (req, res, next) => {
   }
 };
 
-export const requireRefreshToken = (req, res, next) => {
+export const requireRefreshToken = (
+  req: request,
+  res: response,
+  next: next
+) => {
   try {
     const refreshTokenCookie = req.cookies.refreshToken;
     if (!refreshTokenCookie) throw new Error("Token does not exist");

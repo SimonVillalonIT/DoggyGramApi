@@ -1,10 +1,5 @@
 import { checkUser, userRegister } from "../models/user.model";
-interface User {
-  name: string;
-  email: string;
-  password: string;
-  avatar: string;
-}
+import { User } from "../ts/interfaces";
 
 export const FindOrCreate = async (user: User) => {
   try {

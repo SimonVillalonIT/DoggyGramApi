@@ -6,6 +6,7 @@ import {
   logout,
   infoUser,
   refreshToken,
+  changeAvatar,
 } from "../controllers/user.controller";
 import {
   requireRefreshToken,
@@ -20,6 +21,7 @@ router.post("/googleAuth", googleAuth);
 
 router.get("/protected", validateToken, infoUser);
 router.get("/refresh", requireRefreshToken, refreshToken);
+router.post("/changeAvatar", validateToken, changeAvatar);
 
 router.get("/logout", logout);
 

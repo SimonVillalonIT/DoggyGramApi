@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import fs from "fs/promises";
 import bcrypt from "bcrypt";
 import {
@@ -12,8 +11,9 @@ import { UploadedFile } from "express-fileupload";
 import { generateToken, generateRefreshToken } from "../utils/tokenManager";
 import { errorTokens } from "../utils/errorToken";
 import { FindOrCreate } from "../utils/googleAuth";
+import { User, request, response } from "../ts/interfaces";
 
-export async function register(req: Request, res: Response) {
+export async function register(req: request, res: response) {
   try {
     const salt = await bcrypt.genSalt(10);
     const password = await bcrypt.hash(req.body.password, salt);
@@ -42,11 +42,11 @@ export async function register(req: Request, res: Response) {
 
     res.status(200).json({ token, expiresIn });
   } catch (error) {
-    res.status(403).json({ error: error.message });
+    res.status(403).json({ error: error });
   }
 }
 
-export async function login(req: Request, res: Response) {
+export async function login(req: request, res: response) {
   try {
     const result = await userLogin(req.body.user);
     const data = result[0];
@@ -71,8 +71,8 @@ export async function login(req: Request, res: Response) {
   }
 }
 
-export async function googleAuth(req, res) {
-  const user = req.body;
+export async function googleAuth(req: request, res: response) {
+  const user: User = req.body;
   try {
     const id = await FindOrCreate(user);
     const { token, expiresIn } = generateToken(id);
@@ -84,7 +84,27 @@ export async function googleAuth(req, res) {
   }
 }
 
-export async function infoUser(req, res: Response) {
+export async function changeAvatar(req: request, res: response) {
+  try {
+    if (!req.files.image) {
+      throw new Error("There is no file provided");
+    }
+    const file = req.files.image as UploadedFile;
+    const filePath = `${file.tempFilePath}`;
+    const uploadedImage = await uploadImage(filePath, req.uid as string);
+    await fs.unlink(filePath);
+    await userAddAvatar(
+      req.uid as number,
+      uploadedImage.public_id,
+      uploadedImage.secure_url
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(403).json({ error: error });
+  }
+}
+
+export async function infoUser(req: request, res: response) {
   try {
     const user = await userInfo(req.uid);
     return res.json({ userData: user[0][0] });
@@ -94,12 +114,12 @@ export async function infoUser(req, res: Response) {
   }
 }
 
-export function logout(req, res) {
+export function logout(req: request, res: response) {
   res.clearCookie("refreshToken");
   return res.json({ ok: true });
 }
 
-export function refreshToken(req, res) {
+export function refreshToken(req: request, res: response) {
   try {
     const { token, expiresIn } = generateToken(req.uid);
     return res.json({ token, expiresIn });

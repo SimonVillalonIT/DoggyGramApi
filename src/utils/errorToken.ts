@@ -1,4 +1,4 @@
-export const errorTokens = (message) => {
+export const errorTokens = (message: string) => {
   switch (message) {
     case "jwt malformed":
       return "Formato no válido";

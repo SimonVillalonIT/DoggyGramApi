@@ -31,7 +31,7 @@ export const userAddAvatar = async (
   );
 };
 
-export const checkUser = async (name) => {
+export const checkUser = async (name: string) => {
   try {
     const id = await db.query(`SELECT id FROM users WHERE name = "${name}"`);
     return { status: true, id: id[0][0].id };
@@ -40,7 +40,7 @@ export const checkUser = async (name) => {
   }
 };
 
-export const userInfo = async (id) => {
+export const userInfo = async (id: number | string) => {
   const query = await db.query(
     `SELECT id,name,email,public_id,avatar,date FROM users WHERE id = "${id}"`
   );
