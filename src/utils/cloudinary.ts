@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import { cloudinaryVariables } from "../config/envVariables";
+import fs from "fs/promises";
 
 cloudinary.config({
   cloud_name: cloudinaryVariables.cloud_name,
@@ -9,13 +10,16 @@ cloudinary.config({
 });
 
 export async function uploadImage(filePath: string, folder: string) {
-  return await cloudinary.uploader.upload(filePath, {
+  const result = await cloudinary.uploader.upload(filePath, {
     folder: folder,
   });
+  await fs.unlink(filePath);
+  return result;
 }
 
 export async function deleteImage(publicId: string) {
-  return await cloudinary.uploader.destroy(publicId);
+  const result = await cloudinary.uploader.destroy(publicId);
+  return result;
 }
 
 export default cloudinary;

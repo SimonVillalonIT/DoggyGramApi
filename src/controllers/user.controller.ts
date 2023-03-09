@@ -1,4 +1,3 @@
-import fs from "fs/promises";
 import bcrypt from "bcrypt";
 import {
   userRegister,
@@ -30,7 +29,6 @@ export async function register(req: request, res: response) {
       const file = req.files.image as UploadedFile;
       const filePath = `${file.tempFilePath}`;
       const uploadedImage = await uploadImage(filePath, req.body.name);
-      await fs.unlink(filePath);
       await userAddAvatar(
         insertedId,
         uploadedImage.public_id,
@@ -92,12 +90,12 @@ export async function changeAvatar(req: request, res: response) {
     const file = req.files.image as UploadedFile;
     const filePath = `${file.tempFilePath}`;
     const uploadedImage = await uploadImage(filePath, req.uid as string);
-    await fs.unlink(filePath);
     await userAddAvatar(
       req.uid as number,
       uploadedImage.public_id,
       uploadedImage.secure_url
     );
+    res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
     res.status(403).json({ error: error });
